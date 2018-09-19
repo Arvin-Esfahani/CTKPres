@@ -164,7 +164,7 @@ class Ui_Dialog(object):
                 ui = show.Ui_Dialog()
                 cityname=data['name']
                 weather=data['weather'][0]['main']
-                temp=data['main']['temp']
+                temp=data['main']['temp']-273.15
                 ui.setupUi(Dialog,cityname,weather,temp)
                 Dialog.show()
                 Dialog.exec_()
