@@ -1,0 +1,179 @@
+# -*- coding: utf-8 -*-
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QWidget
+import requests
+import json
+APICODE='2698ed7ecba778c1917a16363cc15b48'
+
+class Line(QtWidgets.QLineEdit):
+    def __init__(self, parent=None):
+        super(Line, self).__init__(parent)
+        self.baseStyleSheet="background-color: rgb(255, 255, 255);\nborder-radius: 10px;\nborder-style: solid;\nborder-color: rgb(205, 205, 205);\nborder-width: 2px;"
+
+    def enterEvent(self, QEvent):
+        self.baseStyleSheet=self.styleSheet()
+        self.setStyleSheet("background-color: rgb(235, 235, 235);\n"
+"border-radius: 10px;\n"
+"border-style: solid;\n"
+"border-color: rgb(185, 185, 185);\n"
+"border-width: 2px;")
+        pass
+
+
+    def leaveEvent(self, QEvent):
+        self.setStyleSheet(self.baseStyleSheet)
+        pass
+
+
+class Button(QtWidgets.QPushButton):
+
+    def __init__(self, parent=None):
+        super(Button, self).__init__(parent)
+        self.baseStyleSheet="background-color: rgba(255, 100,10);\nborder-radius: 10px;\ncolor: rgb(255, 255, 255);"
+
+    def enterEvent(self, QEvent):
+        self.baseStyleSheet=self.styleSheet()
+        self.setStyleSheet("background-color: rgba(255, 120,30);\nborder-radius: 10px;\ncolor: rgb(235, 235, 235);")
+        pass
+
+    def leaveEvent(self, QEvent):
+        self.setStyleSheet(self.baseStyleSheet)
+        pass
+
+
+class Ui_Dialog(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(334, 456)
+        Dialog.setMinimumSize(QtCore.QSize(334, 456))
+        Dialog.setMaximumSize(QtCore.QSize(334, 456))
+        Dialog.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.frame = QtWidgets.QFrame(Dialog)
+        self.frame.setStyleSheet(" border-radius: 10px;\n"
+"background-color: rgb(105, 8, 51);")
+        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setObjectName("frame")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.frame)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.logoLayoutH = QtWidgets.QHBoxLayout()
+        self.logoLayoutH.setObjectName("logoLayoutH")
+        spacerItem = QtWidgets.QSpacerItem(40, 150, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.logoLayoutH.addItem(spacerItem)
+        self.logo = QtWidgets.QLabel(self.frame)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.logo.sizePolicy().hasHeightForWidth())
+        self.logo.setSizePolicy(sizePolicy)
+        self.logo.setMinimumSize(QtCore.QSize(150, 150))
+        self.logo.setMaximumSize(QtCore.QSize(150, 150))
+        self.logo.setText("")
+        self.logo.setPixmap(QtGui.QPixmap("owm.png"))
+        self.logo.setScaledContents(True)
+        self.logo.setObjectName("logo")
+        self.logoLayoutH.addWidget(self.logo)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 150, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.logoLayoutH.addItem(spacerItem1)
+        self.verticalLayout.addLayout(self.logoLayoutH)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem2)
+        self.enterNameLabel = QtWidgets.QLabel(self.frame)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.enterNameLabel.sizePolicy().hasHeightForWidth())
+        self.enterNameLabel.setSizePolicy(sizePolicy)
+        self.enterNameLabel.setMinimumSize(QtCore.QSize(0, 70))
+        self.enterNameLabel.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.enterNameLabel.setFont(font)
+        self.enterNameLabel.setStyleSheet("color: rgb(255, 255, 255);")
+        self.enterNameLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.enterNameLabel.setObjectName("enterNameLabel")
+        self.verticalLayout.addWidget(self.enterNameLabel)
+        self.cityNameEntry = Line(self.frame)
+        self.cityNameEntry.setMinimumSize(QtCore.QSize(0, 40))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.cityNameEntry.setFont(font)
+        self.cityNameEntry.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+"border-radius: 10px;\n"
+"border-style: solid;\n"
+"border-color: rgb(205, 205, 205);\n"
+"border-width: 2px;")
+        self.cityNameEntry.setAlignment(QtCore.Qt.AlignCenter)
+        self.cityNameEntry.setObjectName("cityNameEntry")
+        self.verticalLayout.addWidget(self.cityNameEntry)
+        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem3)
+        self.confirmBtn = Button(self.frame)
+        self.confirmBtn.setMinimumSize(QtCore.QSize(0, 50))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setItalic(False)
+        font.setWeight(75)
+        self.confirmBtn.setFont(font)
+        self.confirmBtn.setStyleSheet("background-color: rgba(255, 100,10);\n"
+"border-radius: 10px;\n"
+"color: rgb(255, 255, 255);")
+        self.confirmBtn.setObjectName("confirmBtn")
+        self.verticalLayout.addWidget(self.confirmBtn)
+        self.horizontalLayout.addWidget(self.frame)
+
+        self.confirmBtn.clicked.connect(lambda:self.findWeather(self.cityNameEntry.text()))
+
+        self.retranslateUi(Dialog)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+    def retranslateUi(self, Dialog):
+        _translate = QtCore.QCoreApplication.translate
+        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        self.enterNameLabel.setText(_translate("Dialog", "Enter name of a city:"))
+        self.confirmBtn.setText(_translate("Dialog", "Show Weather"))
+
+    def findWeather(self,city):
+        if city!="":
+            str="http://api.openweathermap.org/data/2.5/weather?q={}&APPID={}".format(city,APICODE)
+            r = requests.get(str)
+            data = json.loads(r.text)
+            if data['cod']=='404':
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Critical)
+                msg.setText("Error")
+                msg.setInformativeText("City not found")
+                msg.setWindowTitle("Error")
+                msg.setStandardButtons(QMessageBox.Ok)
+                msg.exec_()
+            else:
+                import show
+                Dialog = QtWidgets.QDialog()
+                ui = show.Ui_Dialog()
+                cityname=data['name']
+                weather=data['weather'][0]['main']
+                temp=data['main']['temp']
+                ui.setupUi(Dialog,cityname,weather,temp)
+                Dialog.show()
+                Dialog.exec_()
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    sys.exit(app.exec_())
